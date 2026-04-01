@@ -7,33 +7,28 @@
         mc:Ignorable="d"
         Title="JEU DU SCRABBLE - MODE 2 JOUEURS" Height="450" Width="800">
     <Window.Resources>
-        <!-- Style de base -->
         <Style x:Key="BaseStyle">
             <Setter Property="Control.FontWeight" Value="DemiBold" />
             <Setter Property="Control.Margin" Value="5" />
         </Style>
-        <!-- Style pour TextBox basé sur le style de base -->
         <Style TargetType="TextBox" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Padding" Value="1" />
             <Setter Property="Background" Value="#FFF0EBEB" />
             <Setter Property="Height" Value="22"/>
         </Style>
-        <!-- Style pour Label basé sur le style de base -->
         <Style TargetType="Label" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Control.FontSize" Value="14" />
             <Setter Property="Height" Value="30"/>
             <Setter Property="Width" Value="Auto"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
-        <!-- Style pour TextBlock basé sur le style de base -->
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Background" Value="#FFF0EBEB" />
             <Setter Property="Height" Value="22"/>
         </Style>
-        <!-- Style pour Button basé sur le style de base -->
         <Style TargetType="Button" BasedOn="{StaticResource BaseStyle}">
             <Setter Property="Background" Value="#FF6892B3" />
-            <Setter Property="Foreground" Value="#FFF0EBEB"  />
+            <Setter Property="Foreground" Value="#FFF0EBEB" />
             <Setter Property="Height" Value="22"/>
             <Setter Property="Width" Value="100"/>
         </Style>
@@ -42,39 +37,182 @@
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Margin" Value="4"/>
         </Style>
+        <Style x:Key="StyleNomJoueur" TargetType="Label">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
     </Window.Resources>
-    <Grid >
+
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="3*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="DebutPartie" Grid.Row="0" >
+        <!-- Ligne 0 : Saisie des noms + bouton Commencer -->
+        <Grid x:Name="DebutPartie" Grid.Row="0">
             <Label Content="Entrez le nom du Joueur 1" HorizontalAlignment="Left" Margin="100,15,0,0" VerticalAlignment="Top" />
             <TextBox x:Name="txtNomJ1" HorizontalAlignment="Left" Margin="300,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217" BorderThickness="0,0,0,0" />
             <Label Content="Entrez le nom du Joueur 2" HorizontalAlignment="Left" Margin="100,45,0,0" VerticalAlignment="Top" />
             <TextBox x:Name="txtNomJ2" HorizontalAlignment="Left" Margin="300,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217" BorderThickness="0,0,0,0" />
-            <Button x:Name="btnCommencer" Content="COMMENCER" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,35,0,0" />
+            <Button x:Name="btnCommencer" Content="COMMENCER" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="600,35,0,0" Click="btnCommencer_Click" />
         </Grid>
+
+        <!-- Ligne 1 : Zone de jeu — 3 colonnes -->
         <Grid x:Name="Partie" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Joueur 1 (bleu) — colonne 0 -->
+            <Border x:Name="BordureJoueur1" Style="{StaticResource StyleBorder}" Grid.Column="0">
+                <Grid x:Name="PartieJoueur1" Background="#FF8E8EE4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="lblNomJoueur1"
+                           Grid.Row="0"
+                           Content="Joueur 1"
+                           Style="{StaticResource StyleNomJoueur}"/>
+
+                    <Label x:Name="lblToursJ1"
+                           Grid.Row="0"
+                           Content="Tours : 0/5"
+                           FontSize="11"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Top"
+                           Margin="0,33,0,0" Grid.RowSpan="2"/>
+
+
+                    <TextBox x:Name="txtNombleu"
+                             Grid.Row="1"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Width="150"
+                             BorderThickness="0,0,0,0" />
+
+                    <Button x:Name="btnokbleu" Content="OK"
+                            Grid.Row="2"
+                            HorizontalAlignment="Right"
+                            Margin="5" Width="62"
+                            Click="btnOkbleu_Click" />
+                </Grid>
+            </Border>
+
+            <!-- Lettres aléatoires — colonne 1 -->
+            <Border Style="{StaticResource StyleBorder}" Grid.Column="1">
+                <Grid Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0"
+                           Content="Lettres"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"/>
+
+                    <TextBlock x:Name="txtLettres"
+                               Grid.Row="1"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Height="Auto"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               Foreground="#FF333333"
+                               Margin="5"/>
+
+                    <Button x:Name="btnNouvellesLettres"
+                            Grid.Row="2"
+                            Content="Nouvelles"
+                            Width="90"
+                            HorizontalAlignment="Center"
+                            Margin="5"
+                            Click="btnNouvellesLettres_Click"/>
+                </Grid>
+            </Border>
+
+            <!-- Joueur 2 (rouge) — colonne 2 -->
+            <Border x:Name="BordureJoueur2" Style="{StaticResource StyleBorder}" Grid.Column="2">
+                <Grid x:Name="PartieJoueur2" Background="#FFE87070">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="lblNomJoueur2"
+                           Grid.Row="0"
+                           Content="Joueur 2"
+                           Style="{StaticResource StyleNomJoueur}"/>
+
+                    <Label x:Name="lblToursJ2"
+                       Grid.Row="0"
+                       Content="Tours : 0/5"
+                       FontSize="11"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Top"
+                       Margin="0,30,0,0" Grid.RowSpan="2"/>
+
+
+                    <TextBox x:Name="txtNomrouge"
+                             Grid.Row="1"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Width="150"
+                             BorderThickness="0,0,0,0" />
+
+                    <Button x:Name="btnokrouge" Content="OK"
+                            Grid.Row="2"
+                            HorizontalAlignment="Right"
+                            Margin="5" Width="62"
+                            Click="btnOkrouge_Click" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Ligne 2 : Fin de partie -->
+        <Grid x:Name="FinPartie" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <!-- Joueur 1 -->
-            <Border x:Name="BordureJoueur1" Style="{StaticResource StyleBorder}" Grid.Column="0">
-                <Grid x:Name="PartieJoueur1" Background="White"/>
-            </Border>
 
-            <!-- Joueur 2 -->
-            <Border x:Name="BordureJoueur2" Style="{StaticResource StyleBorder}" Grid.Column="1">
-                <Grid x:Name="PartieJoueur2" Background="White"/>
-            </Border>
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="txtHistoriqueBleu"
+                           Margin="5"
+                           FontSize="12"
+                           Height="Auto"
+                           Foreground="#FF3333AA"
+                           TextWrapping="Wrap"/>
+            </ScrollViewer>
 
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="txtHistoriqueRouge"
+                           Margin="5"
+                           FontSize="12"
+                           Height="Auto"
+                           Foreground="#FFAA0000"
+                           TextWrapping="Wrap"/>
+            </ScrollViewer>
         </Grid>
-        <Grid x:Name="FinPartie" Grid.Row="2">
-            
-        </Grid>
+
     </Grid>
 </Window>

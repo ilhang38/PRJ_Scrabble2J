@@ -79,13 +79,21 @@ namespace Scrabble2Joueurs
         /// <returns>mot qui a rapporté le plus grand nombre de points</returns>
         public string MotMeilleur()
         {
-           
-            int max
+            int max=0;
+            string str = "";
             foreach( string mot in this.lesMots)
             {
-                if (Utilitaire(mot) > max) 
+                if (Utilitaire.PointsMot(mot) > max)
+                {
+                    max = Utilitaire.PointsMot(mot);
+                    str = mot;
+                }
             }
-            return "";
+            return str;
+        }
+        public string  getnom()
+        {
+            return this.nom;
         }
         #endregion
     }
